@@ -1,0 +1,52 @@
+{#
+- name: Nombre de la maquina virtual
+- mem: Cantidad de memoria medida en MiB
+- cantCpu: Cantidad de CPUs
+- disksArray: Lista de diccionarios de discos.
+  - disk:
+    - type: Tipo de dispositivo.
+    - path: Ubicacion de disco.
+    - hdType: Tipo de disco.
+- ifacesArray: Lista de diccionarios de interfaces.
+  -iface:
+    - type
+    - name
+    - mac
+    - targetDev
+#}
+<domain type='kvm'>
+    <name>{{ name }}</name>
+    <uuid>c7a5fdbd-cdaf-9455-926a-d65c16db1809</uuid>
+    <memory unit='MiB'>{{ mem }}</memory>
+    <vcpu>{{ cantCpu }}</vcpu>
+    {# Boot order #}
+    <os>
+        <type arch='x86_64' machine='pc'>hvm</type>
+        <boot dev='cdrom'/>
+        <boot dev='hd'/>
+    </os>
+    <clock offset='utc'/>
+    <on_poweroff>destroy</on_poweroff>
+    <on_reboot>restart</on_reboot>
+    <on_crash>destroy</on_crash>
+    <devices>
+        <emulator>/usr/bin/qemu-system-x86_64</emulator>
+        {% for disk in disksArray %}
+        <disk type='file' device='{{ disk.type }}'>
+            <source file='{{ disk.path }}'/>
+            <target dev='{{ disk.hdType }}' bus='ide'/> {# Define tipos de discos #}
+            <driver name='qemu' type='raw'/>
+        </disk>
+        {% endfor %}
+
+        {% for iface in ifacesArray %}
+        <interface type='{{ iface.type }}' name='{{ iface.name }}'>
+            <mac address='{{ iface.mac }}'/>
+            <target dev='{{ targetDev }}'/>
+            <model type='virtio'/>
+            <backend tap='/dev/net/tun'/>
+            <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
+        </interface>{% endfor %}
+    <graphics type='vnc' port='-1' listen='127.0.0.1'/>
+    </devices>
+</domain>
