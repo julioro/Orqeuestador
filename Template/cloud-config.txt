@@ -14,8 +14,8 @@ users:
     groups: cloud-users
     lock_passwd: false
     passwd: 123456
-		no_create_home: false
-		sudo: ALL=(ALL): ALL
+    no_create_home: false
+    sudo: ALL=(ALL) ALL
     ssh_authorized_keys:
       - {{ sshPubKey }}
 

@@ -1,9 +1,9 @@
-apt install cloud-init
 apt install cloud-image-utils
 apt install libvirt-clients
 apt install virt-manager
 apt install python3-pip
 apt install cloud-image-utils
 apt-get install libvirt-dev
+apt install libguestfs-tools
 pip3 install jinja2
 pip3 install libvirt-python

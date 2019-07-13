@@ -33,7 +33,7 @@ hwTemplatePath = templatePath + "domainConfig.xml"
 name = "test"
 mem = "1024"
 cantCpu = "1"
-disksArray = [{'type':'disk', 'path':'/var/lib/libvirt/images/{0}-{1}-DISK.img'.format(index,img), 'hdType':'hdc'}, {'type':'cdrom', 'path':'/var/lib/libvirt/images/{0}-{1}-CLOUD.iso'.format(index, img), 'hdType':'hdc'}]
+disksArray = [{'type':'disk', 'path':'/var/lib/libvirt/images/{0}-{1}-DISK.img'.format(index,img), 'hdType':'hdc'}, {'type':'cdrom', 'path':'/var/lib/libvirt/images/{0}-{1}-CLOUD.iso'.format(index, img), 'hdType':'hda'}]
 
 #disksArray = [{'type':'cdrom', 'path':'/var/lib/libvirt/images/{0}-{1}-DISK.img'.format(index,img), 'hdType':'hdc'}]
 
@@ -43,7 +43,8 @@ ifacesArray = [{'name':'enp2s0', 'type':'ethernet', 'mac':'26:c7:a9:96:a7:7a', '
 
 xmlConfig = lT.xmlConfig(hwTemplatePath, name, mem, cantCpu, disksArray, ifacesArray)
 #print(xmlConfig)
-
+print("END")
+exit(0)
 conn = libvirt.open('qemu:///system')
 if conn == None:
     print('Failed to open connection to qemu:///system')

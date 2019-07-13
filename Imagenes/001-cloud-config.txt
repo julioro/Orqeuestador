@@ -1,31 +1,6 @@
 #cloud-config
-# Add groups to the system
-# The following example adds the ubuntu group with members 'root' and 'sys'
-# and the empty group cloud-users.
-groups:
-  - ubuntu: [root,sys]
-  - cloud-users
+password: prueba
+chpasswd: {expire: False}
+ssh_pwauth: True
+hostname: qcowbionicle
 
-# Add users to the system. Users are added after groups are added.
-users:
-  - default
-  - name: 001-virtualmachine
-    gecos: VIRTUALMACHINE
-    groups: cloud-users
-    lock_passwd: false
-    passwd: 123456
-		no_create_home: false
-		sudo: ALL=(ALL): ALL
-    ssh_authorized_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7A60783+AFL3qTcfN5U8OcC1hHL+V1kQHbR5ZDxhedYKb/9aTiib7C9/6yh9XdwQRkknhcvNQnAjkSFNxNj9MZ/CIQvnYtg0aYVElpTsvssYfFsrqvhmWr/f5a8T5Y62KfdNSmCjLMhqMyHeVfOozQskq30OVE8SWWgPCYhv+/kZzBmBt0dW65kdsq63JoTSfTf3epo0rZY610QLkrSWdlF/vhK1AwEuxszj2YOQMN8DnIuG/hew2LfNevPkxDS8hL9ooIXnxiyd8lzR2TWZhhhNM0h6KyXfcVW85kfEcosH/5srTaqD24pl50yO0s/agC4zjtZ+gutUp6/6c/AHD labtel@192.168.35.127
-
-write_files:
--   encoding: b64
-    content: CiMgVGhpcyBmaWxlIGNvbnRyb2xzIHRoZSBzdGF0ZSBvZiBTRUxpbnV4...
-    owner: root:root
-    path: /
-    permissions: '0777'
--   content: |
-        # Este archivo se creo con cloud-init
-        skrrrraaaa
-    path: /gaaa
