@@ -1,13 +1,15 @@
 #cloud-config
 ssh_pwauth: True
-{% for sshKey in sshKeyArray %}
+{% if sshKeyArray is defined %}
 ssh_authorized_keys:
+{% for sshKey in sshKeyArray %}
   - {{ sshKey }}
 {% endfor %}
+{% endif %}
 users:
   - default
   {% for user in userArray %}
-  - name: {{ user.name }}
+  - name: {{ user.name + index}}
     gecos: {{ user.name.upper() }}
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     ssh_pwauth: True
