@@ -1,0 +1,20 @@
+#cloud-config
+password: root
+chpasswd: {expire: True}
+ssh_pwauth: True
+{% for sshKey in sshKeyArray %}
+ssh_authorized_keys:
+  - {{ sshKey }}
+{% endfor %}
+{% for file in fileArray %}
+write_files:
+-   encoding: {{ file.encoding }}
+    content: {{ file.content }}
+    owner: {{ file.owner }}
+    path: {{ file.path }}
+    permissions: '{{ file.path }}'
+    append: {{ file.append }}
+{% endfor %}
+runcmd:
+ - echo "Este archivo se creo con runcmd >> /runcmmd.txt"
+final_message: "CLOUD-INIT HA TERMINADO DE CONFIGURARSE ..."

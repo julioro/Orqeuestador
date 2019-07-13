@@ -1,0 +1,19 @@
+#cloud-config
+ssh_pwauth: True
+{% for sshKey in sshKeyArray %}
+ssh_authorized_keys:
+  - {{ sshKey }}
+{% endfor %}
+users:
+  - default
+  {% for user in userArray %}
+  - name: {{ user.name }}
+    gecos: {{ user.name.upper() }}
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    ssh_pwauth: True
+  {% endfor %}
+chpasswd:
+  list: |
+     ubuntu:ubuntu
+  expire: False
+final_message: "Credenciales:\nuser:ubuntu\npassword:ubuntu\n"
