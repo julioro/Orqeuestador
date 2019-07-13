@@ -8,10 +8,10 @@ def xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray):
         template = Template(xmlConf)
         return template.render(name=name, mem=mem, cantCpu=cantCpu, disksArray=disksArray, ifacesArray=ifacesArray)
 
-def cloudConfig(index, name, sshPubKey, content):
+def cloudConfig(templatePath, index, name, sshPubKey, content):
     with open(templatePath, 'r') as f:
         cloudConf = f.read()
-        template = Template(xmlConf)
+        template = Template(cloudConf)
         return template.render(index=index, name=name, sshPubKey=sshPubKey, content=content)
 
 def ga():
