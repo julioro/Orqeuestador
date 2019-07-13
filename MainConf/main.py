@@ -9,42 +9,39 @@ import subprocess
 index = "001"
 templatePath = "../Template/"
 img = "bionic-server-cloudimg-amd64"
-
 print("Construyendo cloud-config ...")
-cloudTemplatePath= templatePath + "cloud-config.txt"
-name = "virtualmachine"
-sshPubKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7A60783+AFL3qTcfN5U8OcC1hHL+V1kQHbR5ZDxhedYKb/9aTiib7C9/6yh9XdwQRkknhcvNQnAjkSFNxNj9MZ/CIQvnYtg0aYVElpTsvssYfFsrqvhmWr/f5a8T5Y62KfdNSmCjLMhqMyHeVfOozQskq30OVE8SWWgPCYhv+/kZzBmBt0dW65kdsq63JoTSfTf3epo0rZY610QLkrSWdlF/vhK1AwEuxszj2YOQMN8DnIuG/hew2LfNevPkxDS8hL9ooIXnxiyd8lzR2TWZhhhNM0h6KyXfcVW85kfEcosH/5srTaqD24pl50yO0s/agC4zjtZ+gutUp6/6c/AHD labtel@192.168.35.127"
-content = "skrrrraaaa"
-cloudConfig = lT.cloudConfig(cloudTemplatePath, index, name, sshPubKey, content)
-f = open("../Imagenes/" + index + "-cloud-config.txt", "w")
-f.write(cloudConfig)
+userDataPath= templatePath + "user-data"
+metaDataPath= templatePath + "meta-data"
+
+name = "vm"
+sshKeyArray = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZRz8XJV0n/0/XBtHgDxL6v32Zpo47pxFs4TtK+M3fIX2i0vaEtIr/BgjjOMVBgQbniUB/+vSUA/ViWgmgXwyOBW/Z5MQmMEDIBtzE5H7BryCCIhGqDQ5m8bFZkV5uByCMjBtlQH7mhnjxs3sImGb8k2VjknoG8xVbX6UO+QWkPuoLqECxmiz3kWMixd8gMkO6J5moAr3CqzBXT3IrzcXYUZmtlL9Qv+zvqvmzbZ7J6zn3TFI+sleTKpq/EDyHWcEFQWVpeG8/bWEvyEBsQ6WmohcqVUDB/J+n7Ga1qCecldRiib/f495oT+XQo9J86NqSR+IiBr8yKZDT69/5dpfr juliorod@juliorod"]
+fileArray = [{"encoding":"raw", "content":"Skrra este archivo gaa", "owner":"ubuntu", "path":"/", "permissions":"0777", "append":"true"}]
+
+udt, mdt = lT.cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray)
+f = open("../Imagenes/" + index + "-user-data", "w")
+f.write(udt)
+f.close()
+f = open("../Imagenes/" + index + "-meta-data", "w")
+f.write(mdt)
 f.close()
 
 print("Ejecutando sudo ../CloudInit/crearQcow.sh {0} {1} ...".format(img, index))
-#subprocess.call(["bash", "../CloudInit/crearQcow.sh", img, index], shell=True)
 os.system("sudo bash ../CloudInit/crearQcow.sh {0} {1}".format(img, index))
-os.system("sleep 2")
-
-
-
-#print(cloudConfig)
+#print(cloudConf)
 print("Construyendo domainConfig.xml ...")
 hwTemplatePath = templatePath + "domainConfig.xml"
 name = "test"
 mem = "1024"
 cantCpu = "1"
 disksArray = [{'type':'disk', 'path':'/var/lib/libvirt/images/{0}-{1}-DISK.img'.format(index,img), 'hdType':'hdc'}, {'type':'cdrom', 'path':'/var/lib/libvirt/images/{0}-{1}-CLOUD.iso'.format(index, img), 'hdType':'hda'}]
-
 #disksArray = [{'type':'cdrom', 'path':'/var/lib/libvirt/images/{0}-{1}-DISK.img'.format(index,img), 'hdType':'hdc'}]
-
-
-
 ifacesArray = [{'name':'enp2s0', 'type':'ethernet', 'mac':'26:c7:a9:96:a7:7a', 'targetDev':'tap0'}]
-
 xmlConfig = lT.xmlConfig(hwTemplatePath, name, mem, cantCpu, disksArray, ifacesArray)
 #print(xmlConfig)
 print("END")
 exit(0)
+
+
 conn = libvirt.open('qemu:///system')
 if conn == None:
     print('Failed to open connection to qemu:///system')
