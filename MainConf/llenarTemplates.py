@@ -8,11 +8,11 @@ def xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray):
         template = Template(xmlConf)
         return template.render(name=name, mem=mem, cantCpu=cantCpu, disksArray=disksArray, ifacesArray=ifacesArray)
 
-def cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray):
+def cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray, userArray):
     with open(userDataPath, 'r') as f:
         userData = f.read()
         templateUserData = Template(userData)
-        udt = templateUserData.render(index=index, name=name, sshKeyArray=sshKeyArray, fileArray=fileArray)
+        udt = templateUserData.render(index=index, name=name, sshKeyArray=sshKeyArray, fileArray=fileArray, userArray=userArray)
 
     with open(metaDataPath, 'r') as f:
         metaData = f.read()

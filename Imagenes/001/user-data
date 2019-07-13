@@ -1,0 +1,21 @@
+#cloud-config
+ssh_pwauth: True
+
+ssh_authorized_keys:
+
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZRz8XJV0n/0/XBtHgDxL6v32Zpo47pxFs4TtK+M3fIX2i0vaEtIr/BgjjOMVBgQbniUB/+vSUA/ViWgmgXwyOBW/Z5MQmMEDIBtzE5H7BryCCIhGqDQ5m8bFZkV5uByCMjBtlQH7mhnjxs3sImGb8k2VjknoG8xVbX6UO+QWkPuoLqECxmiz3kWMixd8gMkO6J5moAr3CqzBXT3IrzcXYUZmtlL9Qv+zvqvmzbZ7J6zn3TFI+sleTKpq/EDyHWcEFQWVpeG8/bWEvyEBsQ6WmohcqVUDB/J+n7Ga1qCecldRiib/f495oT+XQo9J86NqSR+IiBr8yKZDT69/5dpfr juliorod@juliorod
+
+
+users:
+  - default
+  
+  - name: vm001
+    gecos: VM
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    ssh_pwauth: True
+  
+chpasswd:
+  list: |
+     ubuntu:ubuntu
+  expire: False
+final_message: "Credenciales:\nuser:ubuntu\npassword:ubuntu\n"
