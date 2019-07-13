@@ -1,1 +1,3 @@
-Imagenes/*
+*/__pycache__/*
+Imagenes/*.iso
+Imagenes/*.img
