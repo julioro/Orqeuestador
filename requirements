@@ -1,0 +1,6 @@
+apt install cloud-init
+apt install cloud-image-utils
+apt install libvirt-clients
+apt install virt-manager
+apt install python3-pip
+pip3 install jinja2
