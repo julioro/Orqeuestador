@@ -4,9 +4,6 @@ REP="/var/lib/libvirt/images"
 IMG=$1
 INDEX=$2
 
-mkdir -p $REP/$INDEX/
-rm -rf $REP/$INDEX/*
-
 qemu-img create -f qcow2 -b $REP/$IMG $REP/$INDEX/boot-disk.img
 echo -e "Creado disco:\t$REP/$INDEX/boot-disk.img"
 genisoimage -output $REP/seed.iso -volid cidata -joliet -rock $DIR/../Imagenes/$INDEX/meta-data $DIR/../Imagenes/$INDEX/user-data
