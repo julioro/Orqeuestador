@@ -40,6 +40,11 @@ mem = "1024"
 cantCpu = "1"
 disksArray = [{'type':'disk', 'path':"{0}/{1}/boot-disk.img".format(REP, index), 'hdType':'hdc'}, {'type':'cdrom', 'path':'{0}/{1}/seed.iso'.format(REP, index), 'hdType':'hda'}]
 ifacesArray = [{'name':'enp2s0', 'type':'ethernet', 'mac':'26:c7:a9:96:a7:7a', 'targetDev':'tap0'}]
+# Para el Direct Kernel Boot
+kdb = False
+kernelPath = "../Imagenes/{0}/vmlinuz".format(index)
+initrdPath = "../Imagenes/{0}/initrd".format(index)
+
 xmlConfig = lT.xmlConfig(hwTemplatePath, name, mem, cantCpu, disksArray, ifacesArray)
 #print(xmlConfig)
 print("END")

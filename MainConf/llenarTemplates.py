@@ -25,14 +25,15 @@ def cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray,
 def ga():
     print(2)
 
-templatePath = './../Template/domainConfig.xml'
-name = 'test'
-mem = 1024
-cantCpu = 2
-disksArray = [{'type': 'test', 'path': 'test', 'hdType': 'test'}]
-ifacesArray = [{'type': 'test', 'name': 'test', 'mac': 'test', 'targetDev': 'test'}]
-kdb = False
-kernelPath = 'test'
-initrdPath = 'test'
+def pruebaLlenado():
+    templatePath = './../Template/domainConfig.xml'
+    name = 'test'
+    mem = 1024
+    cantCpu = 2
+    disksArray = [{'type': 'test', 'path': 'test', 'hdType': 'test'}]
+    ifacesArray = [{'type': 'test', 'name': 'test', 'mac': 'test', 'targetDev': 'test'}]
+    kdb = False
+    kernelPath = 'test'
+    initrdPath = 'test'
 
-print(xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath))
+    print(xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath))
