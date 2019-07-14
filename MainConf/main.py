@@ -32,7 +32,10 @@ f.close()
 
 print("Ejecutando sudo ../CloudInit/crearQcow.sh {0} {1} ...".format(img, index))
 os.system("sudo bash ../CloudInit/crearQcow.sh {0} {1}".format(img, index))
-#print(cloudConf)
+'''
+print(udt)
+print(mdt)
+'''
 print("Construyendo domainConfig.xml ...")
 hwTemplatePath = templatePath + "domainConfig.xml"
 name = "test"
@@ -45,11 +48,10 @@ kdb = False
 kernelPath = "../Imagenes/{0}/vmlinuz".format(index)
 initrdPath = "../Imagenes/{0}/initrd".format(index)
 
-xmlConfig = lT.xmlConfig(hwTemplatePath, name, mem, cantCpu, disksArray, ifacesArray)
+xmlConfig = lT.xmlConfig(hwTemplatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath)
 #print(xmlConfig)
 print("END")
 exit(0)
-
 
 conn = libvirt.open('qemu:///system')
 if conn == None:
