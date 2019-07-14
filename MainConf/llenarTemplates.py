@@ -2,11 +2,11 @@
 from jinja2 import Template
 import sys
 
-def xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray):
+def xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath):
     with open(templatePath, 'r') as f:
         xmlConf = f.read()
         template = Template(xmlConf)
-        return template.render(name=name, mem=mem, cantCpu=cantCpu, disksArray=disksArray, ifacesArray=ifacesArray)
+        return template.render(name=name, mem=mem, cantCpu=cantCpu, disksArray=disksArray, ifacesArray=ifacesArray, kdb=kdb, kernelPath=kernelPath, initrdPath=initrdPath)
 
 def cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray, userArray):
     with open(userDataPath, 'r') as f:
@@ -24,3 +24,15 @@ def cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray,
 
 def ga():
     print(2)
+
+templatePath = './../Template/domainConfig.xml'
+name = 'test'
+mem = 1024
+cantCpu = 2
+disksArray = [{'type': 'test', 'path': 'test', 'hdType': 'test'}]
+ifacesArray = [{'type': 'test', 'name': 'test', 'mac': 'test', 'targetDev': 'test'}]
+kdb = False
+kernelPath = 'test'
+initrdPath = 'test'
+
+print(xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath))
