@@ -20,11 +20,6 @@
 <domain type='kvm'>
     <name>{{ name }}</name>
     <memory unit='MiB'>{{ mem }}</memory>
-<<<<<<< HEAD
-    <vcpu placement='static'>2</vcpu>
-    <os>
-        <type arch='x86_64' machine='pc'>hvm</type>
-=======
     <vcpu placement='static'>{{ cantCpu }}</vcpu>
     {# Boot order #}
     <os>
@@ -35,7 +30,6 @@
         <cmdline>root=/dev/vda2 root-delay=15 console=ttyS0</cmdline>
         {% endif %}
         <boot dev='cdrom'/>
->>>>>>> 0520ceda882743df91520041fd98f0828d3656d8
         <boot dev='hd'/>
         <boot dev='cdrom'/>
         <bootmenu enable='no' timeout='0'/>
