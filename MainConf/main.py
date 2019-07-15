@@ -38,6 +38,7 @@ f.close()
 
 print("Ejecutando sudo ../CloudInit/crearQcow.sh {0} {1} ...".format(img, index))
 os.system("sudo bash ../CloudInit/crearQcow.sh {0} {1}".format(img, index))
+<<<<<<< HEAD
 
 print("Construyendo domainConfig.xml ...")
 #exit(0)
@@ -59,6 +60,29 @@ print("libvirt confiuration:")
 
 print(xmlConfig)
 
+=======
+'''
+print(udt)
+print(mdt)
+'''
+print("Construyendo domainConfig.xml ...")
+hwTemplatePath = templatePath + "domainConfig.xml"
+name = "test"
+mem = "1024"
+cantCpu = "1"
+disksArray = [{'type':'disk', 'path':"{0}/{1}/boot-disk.img".format(REP, index), 'hdType':'hdc'}, {'type':'cdrom', 'path':'{0}/{1}/seed.iso'.format(REP, index), 'hdType':'hda'}]
+ifacesArray = [{'name':'enp2s0', 'type':'ethernet', 'mac':'26:c7:a9:96:a7:7a', 'targetDev':'tap0'}]
+# Para el Direct Kernel Boot
+kdb = False
+kernelPath = "../Imagenes/{0}/vmlinuz".format(index)
+initrdPath = "../Imagenes/{0}/initrd".format(index)
+
+xmlConfig = lT.xmlConfig(hwTemplatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath)
+#print(xmlConfig)
+print("END")
+exit(0)
+
+>>>>>>> 0520ceda882743df91520041fd98f0828d3656d8
 conn = libvirt.open('qemu:///system')
 if conn == None:
     print('Failed to open connection to qemu:///system')
