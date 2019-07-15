@@ -2,11 +2,11 @@
 from jinja2 import Template
 import sys
 
-def xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath):
+def xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath, pciPassEx, pciPass):
     with open(templatePath, 'r') as f:
         xmlConf = f.read()
         template = Template(xmlConf)
-        return template.render(name=name, mem=mem, cantCpu=cantCpu, disksArray=disksArray, ifacesArray=ifacesArray, kdb=kdb, kernelPath=kernelPath, initrdPath=initrdPath)
+        return template.render(name=name, mem=mem, cantCpu=cantCpu, disksArray=disksArray, ifacesArray=ifacesArray, kdb=kdb, kernelPath=kernelPath, initrdPath=initrdPath, pciPassEx=pciPassEx, pciPass=pciPass)
 
 def cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray, userArray):
     with open(userDataPath, 'r') as f:
@@ -35,5 +35,9 @@ def pruebaLlenado():
     kdb = False
     kernelPath = 'test'
     initrdPath = 'test'
+    pciPassEx = True
+    pciPass = {'domain': '0x0000', 'bus': '0x03', 'slot': '0x00', 'function': '0x0'}
 
-    print(xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath))
+    print(xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath, pciPassEx, pciPass))
+
+pruebaLlenado()

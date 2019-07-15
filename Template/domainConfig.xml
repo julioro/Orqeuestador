@@ -16,6 +16,12 @@
     - name
     - mac
     - targetDev
+- pciPassEx: Existencia de pciPassthrough
+- pciPass:
+    - domain
+    - bus
+    - slot
+    - function
 #}
 <domain type='kvm'>
     <name>{{ name }}</name>
@@ -23,15 +29,12 @@
     <vcpu placement='static'>{{ cantCpu }}</vcpu>
     {# Boot order #}
     <os>
-        <type arch='x86_64' machine='pc'>hvm</type>
-        {% if kdb %}
+        <type arch='x86_64' machine='pc'>hvm</type>{% if kdb %}
         <kernel>{{ kernelPath }}</kernel>
         <initrd>{{ initrdPath }}</initrd>
-        <cmdline>root=/dev/vda2 root-delay=15 console=ttyS0</cmdline>
-        {% endif %}
+        <cmdline>root=/dev/vda2 root-delay=15 console=ttyS0</cmdline>{% endif %}
         <boot dev='cdrom'/>
         <boot dev='hd'/>
-        <boot dev='cdrom'/>
         <bootmenu enable='no' timeout='0'/>
     </os>
     <clock offset='utc'/>
@@ -52,7 +55,12 @@
             <source dev="{{ iface.targetDev }}" mode="bridge" />
             <model type='{{ iface.modelType }}'/>
             <address type='pci' domain='0x0000' bus='0x00' slot='0x0{{ loop.index + 2 }}' function='0x0'/>{# Maximo 6 interfaces #}
-        </interface>{% endfor %}
-    <graphics type='vnc' port='-1' listen='127.0.0.1'/>
+        </interface>{% endfor %}{% if pciPassEx %}
+        <hostdev mode='subsystem' type='pci' managed='yes'>
+            <source>
+                <address domain='{{ pciPass.domain }}' bus='{{ pciPass.bus }}' slot='{{ pciPass.slot }}' function='{{ pciPass.function }}'/>
+            </source>
+        </hostdev>{% endif %}    
+        <graphics type='vnc' port='-1' listen='127.0.0.1'/>
     </devices>
 </domain>
