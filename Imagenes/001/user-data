@@ -9,8 +9,8 @@ ssh_authorized_keys:
 users:
   - default
   
-  - name: vm001
-    gecos: VM
+  - name: vmach001
+    gecos: VMACH
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     ssh_pwauth: True
   

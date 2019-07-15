@@ -18,34 +18,31 @@
     <name>{{ name }}</name>
     <uuid>c7a5fdbd-cdaf-9455-926a-d65c16db1809</uuid>
     <memory unit='MiB'>{{ mem }}</memory>
-    <vcpu>{{ cantCpu }}</vcpu>
-    {# Boot order #}
+    <vcpu placement='static'>2</vcpu>
     <os>
         <type arch='x86_64' machine='pc'>hvm</type>
-        <boot dev='cdrom'/>
         <boot dev='hd'/>
+        <boot dev='cdrom'/>
+        <bootmenu enable='no' timeout='0'/>
     </os>
     <clock offset='utc'/>
     <on_poweroff>destroy</on_poweroff>
     <on_reboot>restart</on_reboot>
     <on_crash>destroy</on_crash>
     <devices>
-        <emulator>/usr/bin/qemu-system-x86_64</emulator>
-        {% for disk in disksArray %}
-        <disk type='file' device='{{ disk.type }}'>
+        <emulator>/usr/bin/qemu-system-x86_64</emulator>{% for disk in disksArray %}
+        <disk type='file' device='{{ disk.device }}'>
+            <driver name='qemu' type='{{ disk.driverType }}'/>
             <source file='{{ disk.path }}'/>
             <target dev='{{ disk.hdType }}' bus='ide'/> {# Define tipos de discos #}
-            <driver name='qemu' type='raw'/>
-        </disk>
-        {% endfor %}
-
-        {% for iface in ifacesArray %}
-        <interface type='{{ iface.type }}' name='{{ iface.name }}'>
+            <address type='drive' controller='0' bus='0' target='0' unit='{{ loop.index }}'/>
+        </disk>{% endfor %}{% for iface in ifacesArray %}
+        <interface type='{{ iface.type }}'>
+            <source network='default'/>
             <mac address='{{ iface.mac }}'/>
-            <target dev='{{ targetDev }}'/>
-            <model type='virtio'/>
-            <backend tap='/dev/net/tun'/>
-            <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
+            <source dev="{{ iface.targetDev }}" mode="bridge" />
+            <model type='{{ iface.modelType }}'/>
+            <address type='pci' domain='0x0000' bus='0x00' slot='0x0{{ loop.index + 2 }}' function='0x0'/>{# Maximo 6 interfaces #}
         </interface>{% endfor %}
     <graphics type='vnc' port='-1' listen='127.0.0.1'/>
     </devices>
