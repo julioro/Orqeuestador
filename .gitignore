@@ -1,4 +1,3 @@
 **/__pycache__/
-Imagenes/*.iso
-Imagenes/*.img
+Imagenes/
 *.pdf

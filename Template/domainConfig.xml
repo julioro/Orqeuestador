@@ -10,6 +10,7 @@
     - type: Tipo de dispositivo.
     - path: Ubicacion de disco.
     - hdType: Tipo de disco.
+    - bus: Tipo de bus que usa (ide, sata, virtio)
 - ifacesArray: Lista de diccionarios de interfaces.
   -iface:
     - type
@@ -33,8 +34,8 @@
         <kernel>{{ kernelPath }}</kernel>
         <initrd>{{ initrdPath }}</initrd>
         <cmdline>root=/dev/vda2 root-delay=15 console=ttyS0</cmdline>{% endif %}
-        <boot dev='cdrom'/>
         <boot dev='hd'/>
+        <boot dev='cdrom'/>
         <bootmenu enable='no' timeout='0'/>
     </os>
     <clock offset='utc'/>
@@ -46,15 +47,15 @@
         <disk type='file' device='{{ disk.device }}'>
             <driver name='qemu' type='{{ disk.driverType }}'/>
             <source file='{{ disk.path }}'/>
-            <target dev='{{ disk.hdType }}' bus='ide'/> {# Define tipos de discos #}
-            <address type='drive' controller='0' bus='0' target='0' unit='{{ loop.index }}'/>
+            <target dev='{{ disk.hdType }}' bus='{{ disk.bus }}'/> {# Define tipos de discos #}
+            {# <address type='drive' controller='0' bus='0' target='0' unit='{{ loop.index }}'/> #}
         </disk>{% endfor %}{% for iface in ifacesArray %}
         <interface type='{{ iface.type }}'>
             <source network='default'/>
             <mac address='{{ iface.mac }}'/>
             <source dev="{{ iface.targetDev }}" mode="bridge" />
             <model type='{{ iface.modelType }}'/>
-            <address type='pci' domain='0x0000' bus='0x00' slot='0x0{{ loop.index + 2 }}' function='0x0'/>{# Maximo 6 interfaces #}
+            {# <address type='pci' domain='0x0000' bus='0x00' slot='0x0{{ loop.index + 2 }}' function='0x0'/> #}
         </interface>{% endfor %}{% if pciPassEx %}
         <hostdev mode='subsystem' type='pci' managed='yes'>
             <source>
@@ -62,5 +63,13 @@
             </source>
         </hostdev>{% endif %}    
         <graphics type='vnc' port='-1' listen='127.0.0.1'/>
+        <serial type='pty'>
+            <target type='isa-serial' port='0'>
+                <model name='isa-serial'/>
+            </target>
+        </serial>
+        <console type='pty'>
+            <target type='serial' port='0'/>
+        </console>
     </devices>
 </domain>

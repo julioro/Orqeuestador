@@ -39,5 +39,3 @@ def pruebaLlenado():
     pciPass = {'domain': '0x0000', 'bus': '0x03', 'slot': '0x00', 'function': '0x0'}
 
     print(xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath, pciPassEx, pciPass))
-
-pruebaLlenado()
