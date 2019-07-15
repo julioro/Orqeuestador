@@ -20,12 +20,12 @@ userDataPath = templatePath + "user-data"
 metaDataPath = templatePath + "meta-data"
 
 os.system("clear")
-os.system("sudo mkdir -p ../Imagenes/{0}".format(index))
+os.system("mkdir -p ../Imagenes/{0}".format(index))
 os.system("sudo rm -rf {0}/{1}/".format(REP, index))
 os.system("sudo mkdir -p {0}/{1}/".format(REP, index))
 
 
-sshKeyArray = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZRz8XJV0n/0/XBtHgDxL6v32Zpo47pxFs4TtK+M3fIX2i0vaEtIr/BgjjOMVBgQbniUB/+vSUA/ViWgmgXwyOBW/Z5MQmMEDIBtzE5H7BryCCIhGqDQ5m8bFZkV5uByCMjBtlQH7mhnjxs3sImGb8k2VjknoG8xVbX6UO+QWkPuoLqECxmiz3kWMixd8gMkO6J5moAr3CqzBXT3IrzcXYUZmtlL9Qv+zvqvmzbZ7J6zn3TFI+sleTKpq/EDyHWcEFQWVpeG8/bWEvyEBsQ6WmohcqVUDB/J+n7Ga1qCecldRiib/f495oT+XQo9J86NqSR+IiBr8yKZDT69/5dpfr juliorod@juliorod"]
+sshKeyArray = [""]
 fileArray = [{"encoding":"raw", "content":"Skrra este archivo gaa", "owner":"ubuntu", "path":"/", "permissions":"0777", "append":"true"}]
 userArray = [{"name":name, "password": name}]
 udt, mdt = lT.cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray, userArray)
