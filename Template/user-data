@@ -7,10 +7,11 @@ users:
   - name: {{ user.name }}
     gecos: {{ user.name.upper() }}
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    shell: /bin/bash
     ssh_pwauth: True{% endfor %}
 chpasswd:
   list:
     - ubuntu:ubuntu{% for user in userArray %}
-    - {{ user.name }}:{{ user.password}}{% endfor %}
+    - {{ user.name }}:{{ user.password }}{% endfor %}
   expire: False
-final_message: "Credenciales:\nuser:ubuntu\npassword:ubuntu\n"
+final_message: "\n\nCredenciales:\nuser:ubuntu\tpassword:ubuntu\n{% for user in userArray %}user:{{ user.name }}\tpassword:{{ user.password }}\n\n\n" {% endfor %}

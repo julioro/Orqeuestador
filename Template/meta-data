@@ -1,3 +1,3 @@
 #meta-data
-instance-id: {{ name }}{{ index  }}
-local-hostname: {{ name.lower() }}{{  index  }}
+instance-id: {{ name }}
+local-hostname: {{ name.lower() }}
