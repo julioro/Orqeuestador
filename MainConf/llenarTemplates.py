@@ -2,11 +2,11 @@
 from jinja2 import Template
 import sys
 
-def xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath, pciPassEx, pciPass):
+def xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath, pciPassEx, pciPass, defUser):
     with open(templatePath, 'r') as f:
         xmlConf = f.read()
         template = Template(xmlConf)
-        return template.render(name=name, mem=mem, cantCpu=cantCpu, disksArray=disksArray, ifacesArray=ifacesArray, kdb=kdb, kernelPath=kernelPath, initrdPath=initrdPath, pciPassEx=pciPassEx, pciPass=pciPass)
+        return template.render(name=name, defUser=defUser, mem=mem, cantCpu=cantCpu, disksArray=disksArray, ifacesArray=ifacesArray, kdb=kdb, kernelPath=kernelPath, initrdPath=initrdPath, pciPassEx=pciPassEx, pciPass=pciPass)
 
 def cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray, userArray):
     with open(userDataPath, 'r') as f:

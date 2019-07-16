@@ -16,7 +16,9 @@ sshPath = "../SshFolder"
 REP="/home/labtel/images"
 MacBase = "52:55:00:d1:55:00"
 
-def bootImg(index, imgOp, mem=1024, cantCpu=1, kdb=False, pciPassEx=False):
+def bootImg(index, img, mem=1024, cantCpu=1, kdb=False, pciPassEx=False):
+    imgDefUser = img["defUser"]
+    imgOp = img["img"]
     # Define variables
     name = "vm-" + index
     print("NAME", name)
@@ -32,7 +34,7 @@ def bootImg(index, imgOp, mem=1024, cantCpu=1, kdb=False, pciPassEx=False):
 
     fileArray = []
     userArray=[{"name": name, "password":"root"}]
-    udt, mdt = lT.cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray, userArray)
+    udt, mdt = lT.cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray, userArray, defUser)
     f = open("../Imagenes/" + index + "/user-data", "w")
     f.write(udt)
     f.close()
