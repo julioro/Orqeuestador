@@ -66,7 +66,7 @@ def vmImgCloudInit():
 
 
 def listarVm():
-    frmt = "{:>5}|{:>5}|{:>12}"
+    frmt = "{:>5}|{:>5}|{:>12}|"
     print(frmt.format("NAME", "CPUs", "MEM"))
     for key in dictVM.keys():
         vm = dictVM[key]
@@ -99,13 +99,16 @@ def getNodeText(node):
 def sacarXmlSriov(index):
     xmlConf = subprocess.check_output("virsh dumpxml vm-" + index, shell=True).decode("utf-8").replace("\n", " ")
     pars = BS(xmlConf, features="xml")
-    flag = pars.domain.devices.hostdev.source.address
-    domain = flag["domain"][2:]
-    bus = flag["bus"][2:]
-    slot = flag["slot"][2:]
-    function  = flag["function"][2:]
-    print(domain, bus, slot, function)
-    pass
+    try:
+        flag = pars.domain.devices.hostdev.source.address
+        domain = str(flag["domain"][2:])
+        bus = str(flag["bus"][2:])
+        slot = str(flag["slot"][2:])
+        function  = str(flag["function"][2:])
+        ga = ':'.join([domain, bus, slot, function])
+    except (TypeError, KeyError, AttributeError) as e:
+        return ""
+    return ga
 
 def leerVmExistentes():
     vmExistentes = subprocess.check_output("virsh list | awk ' NR > 2 { print $2 }'", shell=True).decode("utf-8")[:-2]
@@ -114,8 +117,11 @@ def leerVmExistentes():
         if "vm-" in vm:
             index = vm.split("vm-")[1]
             info = subprocess.check_output("bash leerVmExistente.sh " + index, shell=True).decode("utf-8")[:-1].split(" ")
-
-            sacarXmlSriov(index)
+            infoSriov=sacarXmlSriov(index)
+            print(listaSRIOV)
+            if infoSriov in listaSRIOV:
+                listaSRIOV.pop(listaSRIOV.index(infoSriov))
+            print(listaSRIOV)
             name = info[0]
             cantCpus = info[1]
             memQ = info[2]
@@ -135,9 +141,6 @@ def leerTarjetasSRIOV():
     return listaDecode.split(" ")
 
 if __name__ == "__main__":
-    sacarXmlSriov("1")
-
-
     dictVM = {} # nombre, memoria, cpus, imagen
     repDir = ""
     listaSRIOV = leerTarjetasSRIOV()
