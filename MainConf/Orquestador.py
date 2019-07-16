@@ -25,14 +25,16 @@ def vmImgCloudInit(cant):
     #imgOp = 1
     mem = input('Espacio en memoria (MiB):\t')
     cpus = input('Cantidad de CPUs:\t')
-    repDir = input("Repository directory")
+    repDir = input("Repository directory:\t")
     for _ in range(cant):
         index = str(len(dictVM) + 1)  
         imgArr = [{"defUser":"ubuntu", "img":"bionic-server-cloudimg-amd64.img"}, {"defUser":"centos", "img":"CentOS-7-x86_64-GenericCloud.qcow2"}]
         print("Imagenes disponibles:")
         [print("{0}) {1}".format(i+1, imgArr[i]["img"])) for i in range (len(imgArr))]
         imgOp = int(input("Opcion:\t"))
-        flag = BC.bootImg(index, imgArr[imgOp-1], mem, cpus, False, False, repDir)
+        flag = BC.bootImg(index, repDir, imgArr[imgOp-1], mem, cpus)
         if flag: dictVM[index] = "on"
 
-vmImgCloudInit(4)
+while True:
+    print("01) Crrear")
+    print("Menu!")

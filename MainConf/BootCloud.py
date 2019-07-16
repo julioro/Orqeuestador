@@ -16,7 +16,7 @@ sshPath = "../SshFolder"
 #REP="/home/labtel/images"
 MacBase = "52:55:00:d1:55:00"
 
-def bootImg(index, img, mem=1024, cantCpu=1, kdb, pciPassEx, REP):
+def bootImg(index, REP, img, mem=1024, cantCpu=1, kdb=False, pciPassEx=False):
     defUser = img["defUser"]
     imgOp = img["img"]
     # Define variables
