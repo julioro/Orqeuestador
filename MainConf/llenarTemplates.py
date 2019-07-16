@@ -6,7 +6,9 @@ def xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, ke
     with open(templatePath, 'r') as f:
         xmlConf = f.read()
         template = Template(xmlConf)
-        return template.render(name=name,  mem=mem.split(" "), cantCpu=cantCpu, disksArray=disksArray, ifacesArray=ifacesArray, kdb=kdb, kernelPath=kernelPath, initrdPath=initrdPath, pciPassEx=pciPassEx, pciPass=pciPass)
+        memUnits = mem[1]
+        memQ = mem[0]
+        return template.render(name=name,  memUnits=memUnits, memQ=memQ, cantCpu=cantCpu, disksArray=disksArray, ifacesArray=ifacesArray, kdb=kdb, kernelPath=kernelPath, initrdPath=initrdPath, pciPassEx=pciPassEx, pciPass=pciPass)
 
 def cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray, userArray, defUser):
     with open(userDataPath, 'r') as f:

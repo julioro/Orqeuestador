@@ -16,7 +16,7 @@ sshPath = "../SshFolder"
 #REP="/home/labtel/images"
 MacBase = "52:55:00:d1:55:00"
 
-def bootImg(index, REP, img, mem=1024, cantCpu=1, kdb=False, sriov=False ,ifSRIOV=""):
+def bootImg(index, REP, img, mem, cantCpu=1, kdb=False, sriov=False ,ifSRIOV=""):
     defUser = img["defUser"]
     imgOp = img["img"]
     # Define variables
@@ -75,7 +75,7 @@ def bootImg(index, REP, img, mem=1024, cantCpu=1, kdb=False, sriov=False ,ifSRIO
         ifSRIOVL = {'domain': domainIF, 'bus': busIF, 'slot':slotIF, 'function':functionIF}
     else:
         ifSRIOVL = {}
-        
+
     xmlConfig = lT.xmlConfig(hwTemplatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath, sriov, ifSRIOVL)
 
     # Mostar toda la configuracion para una maquina virtual.
