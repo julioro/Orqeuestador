@@ -12,7 +12,8 @@ hwTemplatePath = templatePath + "/domainConfig.xml"
 userDataPath = templatePath + "/user-data"
 metaDataPath = templatePath + "/meta-data"
 sshPath = "../SshFolder"
-REP ="/var/lib/libvirt/images"
+#REP ="/var/lib/libvirt/images"
+REP="/home/labtel/images"
 MacBase = "52:55:00:d1:55:00"
 
 def bootImg(index, imgOp, mem=1024, cantCpu=1, kdb=False, pciPassEx=False):
@@ -95,6 +96,3 @@ def nextMac(index):
     h = str(hex( MacBaseStrInteger ))[2:]
     nextmac = ':'.join(h[i:i+2] for i in range(0,12,2))
     return nextmac
-
-
-os.system("clear")

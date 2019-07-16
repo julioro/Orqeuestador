@@ -13,7 +13,8 @@ name = "vmach"
 mem = "1024"
 cantCpu = "1"
 index = "001"
-REP ="/var/lib/libvirt/images"
+#REP ="/var/lib/libvirt/images"
+REP="~/images"
 img = "bionic-server-cloudimg-amd64"
 print("Construyendo cloud-config ...")
 userDataPath = templatePath + "user-data"
@@ -26,7 +27,7 @@ os.system("sudo mkdir -p {0}/{1}/".format(REP, index))
 
 
 sshKeyArray = [""]
-fileArray = [{"encoding":"raw", "content":"Skrra este archivo gaa", "owner":"ubuntu", "path":"/", "permissions":"0777", "append":"true"}]
+fileArray = [{"encoding":"raw", "content":"Skrra este archivo se creo con cloud-init", "owner":"ubuntu", "path":"/", "permissions":"0777", "append":"true"}]
 userArray = [{"name":name, "password": name}]
 udt, mdt = lT.cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray, userArray)
 f = open("../Imagenes/" + index + "/user-data", "w")
