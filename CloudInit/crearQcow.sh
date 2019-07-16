@@ -1,9 +1,10 @@
 #!/bin/bash
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 #REP="/var/lib/libvirt/images"
-REP="/home/labtel/images"
 IMG=$1
 INDEX=$2
+REP=$3
 
 sudo qemu-img create -f qcow2 -b $REP/$IMG $REP/$INDEX/boot-disk.img
 sudo echo -e "Creado disco:\t$REP/$INDEX/boot-disk.img"

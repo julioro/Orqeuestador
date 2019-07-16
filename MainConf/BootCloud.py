@@ -44,8 +44,8 @@ def bootImg(index, imgOp, mem=1024, cantCpu=1, kdb=False, pciPassEx=False):
     print(udt)
     print("Meta-data")
     print(mdt)
-    print("Ejecutando sudo ../CloudInit/crearQcow.sh {0} {1} ...".format(imgOp, index))
-    os.system("sudo bash ../CloudInit/crearQcow.sh {0} {1}".format(imgOp, index))
+    print("Ejecutando sudo ../CloudInit/crearQcow.sh {0} {1} {2}...".format(imgOp, index, REP))
+    os.system("sudo bash ../CloudInit/crearQcow.sh {0} {1} {2}".format(imgOp, index, REP))
 
     #Define domainConfig.xml
     print("Construyendo domainConfig.xml ...")
