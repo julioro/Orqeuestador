@@ -36,7 +36,7 @@ def vmImgCloudInit():
         index = str(len(dictVM) + 1)
         alreadyExist = True
         while alreadyExist:
-            alreadyExist = if "vm-" + index in dictVM
+            alreadyExist = "vm-" + index in dictVM
             if alreadyExist: index = str(int(index)+1)
 
         imgArr = [{"name": "Ubuntu", "defUser":"ubuntu", "img":"bionic-server-cloudimg-amd64.img", "kernel":"vmlinuz-ubuntu", "initrd":"initrd-ubuntu"}, {"name": "CentOS", "defUser":"centos", "img":"CentOS-7-x86_64-GenericCloud.qcow2", "kernel":"vmlinuz-centos", "initrd":"initrd-centos"}]
