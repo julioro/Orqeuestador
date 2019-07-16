@@ -25,11 +25,11 @@ def vmImgCloudInit():
     cant = int(str(input("\tCantidad de máquinas virtuales: ")))
     memInp = input('\tEspacio en memoria (default MiB): ')
 
-    if len(mem.split(" ")) == 1:
+    if len(memInp.split(" ")) == 1:
         mem = [memInp, "MiB"]
     else:
         mem = memInp.split(" ")
-        
+
     cpus = input('\tCantidad de CPUs: ')
 
     for _ in range(cant):
@@ -87,7 +87,8 @@ if __name__ == "__main__":
     leerVmExistentes()
 
     #defRepDir = "/var/lib/libvirt/images"
-    defRepDir = "/home/labtel/images"
+    #defRepDir = "/home/labtel/images"
+    defRepDir = "/home/scabrera/images"
     repDir = input("Repository directory (" + defRepDir + "):\t")
     if repDir == "": repDir = defRepDir
 
