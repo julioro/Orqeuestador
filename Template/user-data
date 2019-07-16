@@ -11,7 +11,7 @@ users:
     ssh_pwauth: True{% endfor %}
 chpasswd:
   list:
-    - {{ defUser }}:{{ defUser }}}{% for user in userArray %}
+    - {{ defUser }}:{{ defUser }}{% for user in userArray %}
     - {{ user.name }}:{{ user.password }}{% endfor %}
   expire: False
 final_message: "\n\nCredenciales:\nuser:{{ defUser }}\tpassword:{{ defUser }}\n{% for user in userArray %}user:{{ user.name }}\tpassword:{{ user.password }}\n\n\n" {% endfor %}
