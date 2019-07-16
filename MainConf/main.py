@@ -64,12 +64,11 @@ def vmImgCloudInit():
 
 
 def listarVm():
-    print(dictVM)
-    frmt = "{:>10}|{:>10}|{:>10}"
+    frmt = "{:>5}|{:>5}|{:>12}"
     print(frmt.format("NAME", "CPUs", "MEM"))
     for key in dictVM.keys():
         vm = dictVM[key]
-        print(frmt.format(vm["name"], vm["cantCpus"], vm["mem"][0]))
+        print(frmt.format(vm["name"], vm["cantCpus"], vm["mem"][0]+ " " +  vm["mem"][1]))
     # name = virsh dominfo vm-1 | grep "Name" | awk '{ print $2 }'
     # cpus = virsh dominfo vm-1 | grep "CPU(s)" | awk '{ print $2 }'
     # mem = virsh dominfo vm-1 | grep "Max memory: " | awk '{ print $3 " " $4 }'
@@ -77,6 +76,10 @@ def listarVm():
     pass
 
 
+def cambiarRepDir():
+    repDir = input("Repository directory (default: " + defRepDir + "):\t")
+    if repDir == "": repDir = defRepDir
+    return repDir
 
 def terminarPrograma():
     print("*" * 70 )
@@ -84,18 +87,17 @@ def terminarPrograma():
 
 
 def leerVmExistentes():
-    exit(1)
     vmExistentes = subprocess.check_output("virsh list | awk ' NR > 2 { print $2 }'", shell=True).decode("utf-8")[:-2]
     vmList = vmExistentes.split("\n")
-    print (vmList)
     for vm in vmList:
         if "vm-" in vm:
             index = vm.split("vm-")[1]
             info = subprocess.check_output("bash leerVmExistente.sh " + index, shell=True).decode("utf-8")[:-1].split(" ")
-            print (info)
             name = info[0]
             cantCpus = info[1]
-            mem = info[2].split(" ")+
+            memQ = info[2]
+            memUnits = info[3]
+            mem = [memQ, memUnits]
             #disksArray =
             #ifaces =
             dictVM[index] = {"name": name, "mem": mem, "cantCpus": cantCpus}
@@ -113,15 +115,14 @@ if __name__ == "__main__":
     listaSRIOV = leerTarjetasSRIOV()
     leerVmExistentes()
 
-    #defRepDir = "/var/lib/libvirt/images"
-    #defRepDir = "/home/labtel/images"
     defRepDir = "/home/scabrera/images"
-    repDir = input("Repository directory (" + defRepDir + "):\t")
+    repDir=cambiarRepDir()
+
     if repDir == "": repDir = defRepDir
 
     print("*"*70)
     while True:
-        options = [("Crear máquina virtual", vmImgCloudInit) , ("Listar máquinas virtuales", listarVm), ("Salir", terminarPrograma)]
+        options = [("Crear máquina virtual", vmImgCloudInit) , ("Listar máquinas virtuales", listarVm), ("Cambiar ubicación de imagenes", cambiarRepDir), ("Salir", terminarPrograma)]
         for i  in range(len(options)):
             print("[{0}] {1}".format( i+1, options[i][0] ))
         try:
@@ -129,3 +130,5 @@ if __name__ == "__main__":
             options[op-1][1]()
         except (IndexError, ValueError) as e:
             print("Opción inválida...\n")
+        finally:
+            print("\n")
