@@ -34,6 +34,11 @@ def vmImgCloudInit():
 
     for _ in range(cant):
         index = str(len(dictVM) + 1)
+        alreadyExist = True
+        while alreadyExist:
+            alreadyExist = if "vm-" + index in dictVM
+            if alreadyExist: index = str(int(index)+1)
+
         imgArr = [{"defUser":"ubuntu", "img":"bionic-server-cloudimg-amd64.img"}, {"defUser":"centos", "img":"CentOS-7-x86_64-GenericCloud.qcow2"}]
         print("Imagenes disponibles:")
         [print("\t{0}) {1}".format(i+1, imgArr[i]["img"])) for i in range (len(imgArr))]
@@ -49,6 +54,7 @@ def vmImgCloudInit():
         # SRI-OV
         sriovInput = input("Implementar SRI-OV (S/n): ")
         sriov = sriovInput in ["S", "Y", "SI", "YES"]
+        ifSRIOV = ""
         if sriov:
             ifSRIOV = listaSRIOV.pop()
 
@@ -73,6 +79,19 @@ def terminarPrograma():
     pass
 
 def leerVmExistentes():
+    vmExistentes = subprocess.check_output("virsh list | awk '{ print $2 }'", shell=True).decode("utf-8")[:-1]
+    vmList = vmExistentes.split(" ")
+    for vm in vmList:
+        if "vm-" in vm:
+            index = vm.split("vm-")[1]
+            info = subprocess.check_output("bash leerVmExistentes.sh " + index, shell=True).decode("utf-8")[:-1].split(" ")
+            name = info[0]
+            cantCpus = info[1]
+            mem = info[2]
+            #disksArray =
+            #ifaces =
+            dictVM[index] = {"name": name, "mem": mem, }
+
     pass
 
 def leerTarjetasSRIOV():

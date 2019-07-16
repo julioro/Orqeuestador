@@ -5,6 +5,7 @@ import libvirt
 import llenarTemplates as lT
 import os
 import subprocess
+import xml
 
 # Variables globales
 templatePath = "../Template"
@@ -61,11 +62,15 @@ def bootImg(index, REP, img, mem, cantCpu=1, kdb=False, sriov=False ,ifSRIOV="")
 
     ifacesArray = [{'name': tapInt, 'type':'network', 'mac':mac, 'targetDev':tapInt, 'modelType':'virtio'}]
 
+
     # Para el Direct Kernel Boot
+    os.system("cp {0}/{1} ../Imagenes/{2}/vmlinuz".format(REP, imgOp, index))
+
     kernelPath = "../Imagenes/{0}/vmlinuz".format(index)
     initrdPath = "../Imagenes/{0}/initrd".format(index)
 
     # Para PCI PassThrough / SRIOV
+    ifSRIOVL = {}
     if sriov:
         ifSRIOVD = ifSRIOV.split(":")
         domainIF = "0x"+ifSRIOVD[0]
@@ -73,8 +78,6 @@ def bootImg(index, REP, img, mem, cantCpu=1, kdb=False, sriov=False ,ifSRIOV="")
         slotIF = "0x"+ifSRIOVD[2].split(".")[0]
         functionIF = "0x"+ifSRIOVD[2].split(".")[1]
         ifSRIOVL = {'domain': domainIF, 'bus': busIF, 'slot':slotIF, 'function':functionIF}
-    else:
-        ifSRIOVL = {}
 
     xmlConfig = lT.xmlConfig(hwTemplatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath, sriov, ifSRIOVL)
 
