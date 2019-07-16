@@ -1,6 +1,4 @@
-apt install cloud-image-utils
-apt install libvirt-clients
-apt install virt-manager
-apt install python3-pip
-pip3 install jinja2
-pip3 install libvirt-python
+jinja2
+libvirt-python
+beautifulsoup4
+lxml

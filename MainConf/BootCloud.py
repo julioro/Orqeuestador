@@ -57,8 +57,8 @@ def bootImg(index, REP, img, mem, cantCpu=1, kdb=False, sriov=False ,ifSRIOV="")
 
     # Creacion de la interfaz tap
     mac = nextMac(index)
-    os.system("bash crearInterfazTap.sh {0} {1}".format(index, mac))
-    tapInt = "tap" + index
+    # os.system("bash crearInterfazTap.sh {0} {1}".format(index, mac))
+    # tapInt = "tap" + index
 
     ifacesArray = [{'name': tapInt, 'type':'network', 'mac':mac, 'targetDev':tapInt, 'modelType':'virtio'}]
 

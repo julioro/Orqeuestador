@@ -16,7 +16,9 @@
 import sys
 import BootCloud as BC
 import subprocess
-
+import xml.etree.ElementTree as ET
+import xml.dom.minidom
+from bs4 import BeautifulSoup as BS
 
 def vmImgCloudInit():
     #mem = "1024"
@@ -85,6 +87,25 @@ def terminarPrograma():
     print("*" * 70 )
     return exit(0)
 
+def getNodeText(node):
+
+    nodelist = node.childNodes
+    result = []
+    for node in nodelist:
+        if node.nodeType == node.TEXT_NODE:
+            result.append(node.data)
+    return ''.join(result)
+
+def sacarXmlSriov(index):
+    xmlConf = subprocess.check_output("virsh dumpxml vm-" + index, shell=True).decode("utf-8").replace("\n", " ")
+    pars = BS(xmlConf, features="xml")
+    flag = pars.domain.devices.hostdev.source.address
+    domain = flag["domain"][2:]
+    bus = flag["bus"][2:]
+    slot = flag["slot"][2:]
+    function  = flag["function"][2:]
+    print(domain, bus, slot, function)
+    pass
 
 def leerVmExistentes():
     vmExistentes = subprocess.check_output("virsh list | awk ' NR > 2 { print $2 }'", shell=True).decode("utf-8")[:-2]
@@ -93,11 +114,15 @@ def leerVmExistentes():
         if "vm-" in vm:
             index = vm.split("vm-")[1]
             info = subprocess.check_output("bash leerVmExistente.sh " + index, shell=True).decode("utf-8")[:-1].split(" ")
+
+            sacarXmlSriov(index)
             name = info[0]
             cantCpus = info[1]
             memQ = info[2]
             memUnits = info[3]
             mem = [memQ, memUnits]
+
+
             #disksArray =
             #ifaces =
             dictVM[index] = {"name": name, "mem": mem, "cantCpus": cantCpus}
@@ -110,6 +135,9 @@ def leerTarjetasSRIOV():
     return listaDecode.split(" ")
 
 if __name__ == "__main__":
+    sacarXmlSriov("1")
+
+
     dictVM = {} # nombre, memoria, cpus, imagen
     repDir = ""
     listaSRIOV = leerTarjetasSRIOV()
