@@ -118,7 +118,7 @@ def leerVmExistentes():
             index = vm.split("vm-")[1]
             info = subprocess.check_output("bash leerVmExistente.sh " + index, shell=True).decode("utf-8")[:-1].split(" ")
             infoSriov=sacarXmlSriov(index)
-            print(listaSRIOV)
+            print(infoSriov)
             if infoSriov in listaSRIOV:
                 listaSRIOV.pop(listaSRIOV.index(infoSriov))
             print(listaSRIOV)
