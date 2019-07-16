@@ -26,7 +26,7 @@
 #}
 <domain type='kvm'>
     <name>{{ name }}</name>
-    <memory unit='{{ mem[0] }}'>{{ mem[1] }}</memory>
+    <memory unit='{{ memUnits }}'>{{ memQ }}</memory>
     <vcpu placement='static'>{{ cantCpu }}</vcpu>
     {# Boot order #}
     <os>

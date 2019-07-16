@@ -24,9 +24,12 @@ def vmImgCloudInit():
     #imgOp = 1
     cant = int(str(input("\tCantidad de máquinas virtuales: ")))
     memInp = input('\tEspacio en memoria (default MiB): ')
-    mem = memInp
-    if len(mem.split(" ")) == 1: mem = [memInp, "MiB"]
 
+    if len(mem.split(" ")) == 1:
+        mem = [memInp, "MiB"]
+    else:
+        mem = memInp.split(" ")
+        
     cpus = input('\tCantidad de CPUs: ')
 
     for _ in range(cant):
