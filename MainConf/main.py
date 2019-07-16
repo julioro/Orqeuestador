@@ -40,8 +40,8 @@ def vmImgCloudInit():
             if alreadyExist: index = str(int(index)+1)
 
         imgArr = [{"name": "Ubuntu", "defUser":"ubuntu", "img":"bionic-server-cloudimg-amd64.img", "kernel":"vmlinuz-ubuntu", "initrd":"initrd-ubuntu"}, {"name": "CentOS", "defUser":"centos", "img":"CentOS-7-x86_64-GenericCloud.qcow2", "kernel":"vmlinuz-centos", "initrd":"initrd-centos"}]
-        print("Imagenes disponibles:")
-        [print("\t{0}) {1}".format(i+1, imgArr[i]["name"])) for i in range (len(imgArr))]
+        print("\tImagenes disponibles:")
+        [print("\t\t{0}) {1}".format(i+1, imgArr[i]["name"])) for i in range (len(imgArr))]
         imgOp = int(input("Opcion:\t"))
 
         # Direct Kernel Boot
@@ -62,37 +62,45 @@ def vmImgCloudInit():
         if flag: dictVM[index] = flag
     pass
 
+
 def listarVm():
-    print("listarVm")
-    pass
+    print(dictVM)
+    frmt = "{:>10}|{:>10}|{:>10}"
+    print(frmt.format("NAME", "CPUs", "MEM"))
+    for key in dictVM.keys():
+        vm = dictVM[key]
+        print(frmt.format(vm["name"], vm["cantCpus"], vm["mem"][0]))
     # name = virsh dominfo vm-1 | grep "Name" | awk '{ print $2 }'
     # cpus = virsh dominfo vm-1 | grep "CPU(s)" | awk '{ print $2 }'
     # mem = virsh dominfo vm-1 | grep "Max memory: " | awk '{ print $3 " " $4 }'
     # ifaces = virsh domifaddr vm-1
-
-
-
     pass
+
+
 
 def terminarPrograma():
-    exit(0)
-    pass
+    print("*" * 70 )
+    return exit(0)
+
 
 def leerVmExistentes():
-    vmExistentes = subprocess.check_output("virsh list | awk '{ print $2 }'", shell=True).decode("utf-8")[:-1]
-    vmList = vmExistentes.split(" ")
+    exit(1)
+    vmExistentes = subprocess.check_output("virsh list | awk ' NR > 2 { print $2 }'", shell=True).decode("utf-8")[:-2]
+    vmList = vmExistentes.split("\n")
+    print (vmList)
     for vm in vmList:
         if "vm-" in vm:
             index = vm.split("vm-")[1]
-            info = subprocess.check_output("bash leerVmExistentes.sh " + index, shell=True).decode("utf-8")[:-1].split(" ")
+            info = subprocess.check_output("bash leerVmExistente.sh " + index, shell=True).decode("utf-8")[:-1].split(" ")
+            print (info)
             name = info[0]
             cantCpus = info[1]
-            mem = info[2]
+            mem = info[2].split(" ")+
             #disksArray =
             #ifaces =
-            dictVM[index] = {"name": name, "mem": mem, }
+            dictVM[index] = {"name": name, "mem": mem, "cantCpus": cantCpus}
 
-    pass
+    return True
 
 def leerTarjetasSRIOV():
     listaSRIOV = subprocess.check_output("bash sacarTarjetasSRIOV.sh", shell=True)
