@@ -33,7 +33,7 @@
         <type arch='x86_64' machine='pc'>hvm</type>{% if kdb %}
         <kernel>{{ kernelPath }}</kernel>
         <initrd>{{ initrdPath }}</initrd>
-        <cmdline>root=/dev/vda2 root-delay=15 console=ttyS0</cmdline>{% endif %}
+        <cmdline>root=/dev/vda1 root-delay=15 console=ttyS0</cmdline>{% endif %}
         <boot dev='hd'/>
         <boot dev='cdrom'/>
         <bootmenu enable='no' timeout='0'/>

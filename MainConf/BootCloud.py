@@ -64,10 +64,14 @@ def bootImg(index, REP, img, mem, cantCpu=1, kdb=False, sriov=False ,ifSRIOV="")
 
 
     # Para el Direct Kernel Boot
-    os.system("cp {0}/{1} ../Imagenes/{2}/vmlinuz".format(REP, imgOp, index))
+    kernelPath = ""
+    initrdPath = ""
+    if kdb:
+        os.system("cp {0}/{1} {0}/{2}/vmlinuz".format(REP, img["kernel"], index))
+        os.system("cp {0}/{1} {0}/{2}/initrd".format(REP, img["initrd"], index))
 
-    kernelPath = "../Imagenes/{0}/vmlinuz".format(index)
-    initrdPath = "../Imagenes/{0}/initrd".format(index)
+        kernelPath = "{0}/{1}/vmlinuz".format(REP, index)
+        initrdPath = "{0}/{1}/initrd".format(REP, index)
 
     # Para PCI PassThrough / SRIOV
     ifSRIOVL = {}

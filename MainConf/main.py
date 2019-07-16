@@ -39,9 +39,9 @@ def vmImgCloudInit():
             alreadyExist = if "vm-" + index in dictVM
             if alreadyExist: index = str(int(index)+1)
 
-        imgArr = [{"defUser":"ubuntu", "img":"bionic-server-cloudimg-amd64.img"}, {"defUser":"centos", "img":"CentOS-7-x86_64-GenericCloud.qcow2"}]
+        imgArr = [{"name": "Ubuntu", "defUser":"ubuntu", "img":"bionic-server-cloudimg-amd64.img", "kernel":"vmlinuz-ubuntu", "initrd":"initrd-ubuntu"}, {"name": "CentOS", "defUser":"centos", "img":"CentOS-7-x86_64-GenericCloud.qcow2", "kernel":"vmlinuz-centos", "initrd":"initrd-centos"}]
         print("Imagenes disponibles:")
-        [print("\t{0}) {1}".format(i+1, imgArr[i]["img"])) for i in range (len(imgArr))]
+        [print("\t{0}) {1}".format(i+1, imgArr[i]["name"])) for i in range (len(imgArr))]
         imgOp = int(input("Opcion:\t"))
 
         # Direct Kernel Boot
