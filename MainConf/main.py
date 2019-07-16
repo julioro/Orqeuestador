@@ -45,14 +45,14 @@ def vmImgCloudInit():
         imgOp = int(input("Opcion:\t"))
 
         # Direct Kernel Boot
-        kdbInput = input("Implementar mediante Direct Kernel Boot (S/n): ")
+        kdbInput = input("Implementar mediante Direct Kernel Boot (S/n): ").upper()
         kdb = kdbInput in ["S", "Y", "SI", "YES"]
         # PCI Passtrough
         #pciPassExInput = input("Implementar PCI Passtrough (S/n): ")
         #pciPassEx = pciPassExInput in ["S", "Y", "SI", "YES"]
 
         # SRI-OV
-        sriovInput = input("Implementar SRI-OV (S/n): ")
+        sriovInput = input("Implementar SRI-OV (S/n): ").upper()
         sriov = sriovInput in ["S", "Y", "SI", "YES"]
         ifSRIOV = ""
         if sriov:
