@@ -2,17 +2,17 @@
 from jinja2 import Template
 import sys
 
-def xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath, pciPassEx, pciPass, defUser):
+def xmlConfig(templatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath, pciPassEx, pciPass):
     with open(templatePath, 'r') as f:
         xmlConf = f.read()
         template = Template(xmlConf)
-        return template.render(name=name, defUser=defUser, mem=mem, cantCpu=cantCpu, disksArray=disksArray, ifacesArray=ifacesArray, kdb=kdb, kernelPath=kernelPath, initrdPath=initrdPath, pciPassEx=pciPassEx, pciPass=pciPass)
+        return template.render(name=name,  mem=mem, cantCpu=cantCpu, disksArray=disksArray, ifacesArray=ifacesArray, kdb=kdb, kernelPath=kernelPath, initrdPath=initrdPath, pciPassEx=pciPassEx, pciPass=pciPass)
 
-def cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray, userArray):
+def cloudConfig(userDataPath, metaDataPath, index, name, sshKeyArray, fileArray, userArray, defUser):
     with open(userDataPath, 'r') as f:
         userData = f.read()
         templateUserData = Template(userData)
-        udt = templateUserData.render(index=index, name=name, sshKeyArray=sshKeyArray, fileArray=fileArray, userArray=userArray)
+        udt = templateUserData.render(index=index, name=name,defUser=defUser, sshKeyArray=sshKeyArray, fileArray=fileArray, userArray=userArray)
 
     with open(metaDataPath, 'r') as f:
         metaData = f.read()
