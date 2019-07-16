@@ -105,7 +105,8 @@ def sacarXmlSriov(index):
         bus = str(flag["bus"][2:])
         slot = str(flag["slot"][2:])
         function  = str(flag["function"][2:])
-        ga = ':'.join([domain, bus, slot, function])
+        ga = ':'.join([domain, bus, slot])
+        ga = ga + "." + function
     except (TypeError, KeyError, AttributeError) as e:
         return ""
     return ga
