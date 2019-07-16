@@ -24,7 +24,7 @@ def bootImg(index, imgOp, mem=1024, cantCpu=1, kdb=False, pciPassEx=False):
     
     # Define user-data y meta-data
     print("Construyendo cloud-config ...")
-    os.system("rm -rf ../Imagenes/{0}; mkdir -p ../Imagenes/{0}; sudo rm -rf {1}/{0}/ ; sudo mkdir -p {1}/{0}".format(index, REP))
+    os.system("rm -rf ../Imagenes/{0}; mkdir -p ../Imagenes/{0}; rm -rf {1}/{0}/ ; mkdir -p {1}/{0}".format(index, REP))
     sshKeyArray = []
     for file in os.listdir(sshPath):
         with open(sshPath + '/' + file, 'r') as f:
@@ -44,8 +44,8 @@ def bootImg(index, imgOp, mem=1024, cantCpu=1, kdb=False, pciPassEx=False):
     print(udt)
     print("Meta-data")
     print(mdt)
-    print("Ejecutando sudo ../CloudInit/crearQcow.sh {0} {1} {2}...".format(imgOp, index, REP))
-    os.system("sudo bash ../CloudInit/crearQcow.sh {0} {1} {2}".format(imgOp, index, REP))
+    print("Ejecutando bash ../CloudInit/crearQcow.sh {0} {1} {2}...".format(imgOp, index, REP))
+    os.system("bash ../CloudInit/crearQcow.sh {0} {1} {2}".format(imgOp, index, REP))
 
     #Define domainConfig.xml
     print("Construyendo domainConfig.xml ...")
@@ -54,7 +54,7 @@ def bootImg(index, imgOp, mem=1024, cantCpu=1, kdb=False, pciPassEx=False):
     
     # Creacion de la interfaz tap
     mac = nextMac(index)
-    os.system("sudo bash crearInterfazTap.sh {0} {1}".format(index, mac))
+    os.system("bash crearInterfazTap.sh {0} {1}".format(index, mac))
     tapInt = "tap" + index
 
     ifacesArray = [{'name': tapInt, 'type':'network', 'mac':mac, 'targetDev':tapInt, 'modelType':'virtio'}]
