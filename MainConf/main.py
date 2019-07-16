@@ -55,8 +55,9 @@ def vmImgCloudInit():
 
         # SRI-OV
         ifSRIOV = ""
-        if (listaSRIOV):
-            sriovInput = input("Implementar SRI-OV (S/n): ").upper()
+        sriov = False
+        if (len (listaSRIOV) > 0):
+            sriovInput = input("Implementar SR-IOV (S/n): ").upper()
             sriov = sriovInput in ["S", "Y", "SI", "YES"]
             if sriov:
                 ifSRIOV = listaSRIOV.pop()
@@ -65,19 +66,17 @@ def vmImgCloudInit():
         if flag: dictVM[index] = flag
     pass
 
-
 def listarVm():
     frmt = "{:>5}|{:>5}|{:>12}|"
     print(frmt.format("NAME", "CPUs", "MEM"))
     for key in dictVM.keys():
         vm = dictVM[key]
-        print(frmt.format(vm["name"], vm["cantCpus"], vm["mem"][0]+ " " +  vm["mem"][1]))
+        print(frmt.format(vm["name"], vm["cpus"], vm["mem"][0]+ " " +  vm["mem"][1]))
     # name = virsh dominfo vm-1 | grep "Name" | awk '{ print $2 }'
     # cpus = virsh dominfo vm-1 | grep "CPU(s)" | awk '{ print $2 }'
     # mem = virsh dominfo vm-1 | grep "Max memory: " | awk '{ print $3 " " $4 }'
     # ifaces = virsh domifaddr vm-1
     pass
-
 
 def cambiarRepDir():
     repDir = input("Repository directory (default: " + defRepDir + "):\t")
@@ -120,10 +119,8 @@ def leerVmExistentes():
             index = vm.split("vm-")[1]
             info = subprocess.check_output("bash leerVmExistente.sh " + index, shell=True).decode("utf-8")[:-1].split(" ")
             infoSriov=sacarXmlSriov(index)
-            print(infoSriov)
             if infoSriov in listaSRIOV:
                 listaSRIOV.pop(listaSRIOV.index(infoSriov))
-            print(listaSRIOV)
             name = info[0]
             cantCpus = info[1]
             memQ = info[2]
@@ -133,7 +130,7 @@ def leerVmExistentes():
 
             #disksArray =
             #ifaces =
-            dictVM[index] = {"name": name, "mem": mem, "cantCpus": cantCpus}
+            dictVM[index] = {"name": name, "mem": mem, "cpus": cantCpus}
 
     return True
 
@@ -141,6 +138,14 @@ def leerTarjetasSRIOV():
     listaSRIOV = subprocess.check_output("bash sacarTarjetasSRIOV.sh", shell=True)
     listaDecode = listaSRIOV.decode("utf-8")[:-1]
     return listaDecode.split(" ")
+
+def VFdisponibles():
+    if len(listaSRIOV) > 1:
+        for i in range(len(listaSRIOV))
+            print("{0}) {1}".format(i+1, listaSRIOV[i]))
+    else:
+        print("No hay VFs disponibles")
+    pass
 
 if __name__ == "__main__":
     dictVM = {} # nombre, memoria, cpus, imagen
@@ -155,7 +160,7 @@ if __name__ == "__main__":
 
     print("*"*70)
     while True:
-        options = [("Crear máquina virtual", vmImgCloudInit) , ("Listar máquinas virtuales", listarVm), ("Cambiar ubicación de imagenes", cambiarRepDir), ("Salir", terminarPrograma)]
+        options = [("Crear máquina virtual", vmImgCloudInit) , ("Listar máquinas virtuales", listarVm), ("Cambiar ubicación de imagenes", cambiarRepDir), ("VF disponibles", VFdisponibles), ("Salir", terminarPrograma)]
         for i  in range(len(options)):
             print("[{0}] {1}".format( i+1, options[i][0] ))
         try:

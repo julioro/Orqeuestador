@@ -101,7 +101,7 @@ def bootImg(index, REP, img, mem, cantCpu=1, kdb=False, sriov=False ,ifSRIOV="")
         print('Failed to create a domain from an XML definition.')
         return False
 
-    print('Guest', dom.name(), ' has booted')
+    print('VM',  dom.name(), ' ha sido booteada.')
     return {"name":name, "mem": mem, "cpus":cantCpu, "imagen": imgOp, "ifaces":ifacesArray, "disksArray":disksArray}
 
 
