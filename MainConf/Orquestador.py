@@ -32,7 +32,7 @@ def vmImgCloudInit(cant):
         print("Imagenes disponibles:")
         [print("{0}) {1}".format(i+1, imgArr[i]["img"])) for i in range (len(imgArr))]
         imgOp = int(input("Opcion:\t"))
-        flag = BC.bootImg(index, imgArr[imgOp-1], mem, cpus, repDir)
+        flag = BC.bootImg(index, imgArr[imgOp-1], mem, cpus, False, False, repDir)
         if flag: dictVM[index] = "on"
 
 vmImgCloudInit(4)
