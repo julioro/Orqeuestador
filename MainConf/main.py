@@ -54,11 +54,12 @@ def vmImgCloudInit():
         #pciPassEx = pciPassExInput in ["S", "Y", "SI", "YES"]
 
         # SRI-OV
-        sriovInput = input("Implementar SRI-OV (S/n): ").upper()
-        sriov = sriovInput in ["S", "Y", "SI", "YES"]
         ifSRIOV = ""
-        if sriov:
-            ifSRIOV = listaSRIOV.pop()
+        if (listaSRIOV):
+            sriovInput = input("Implementar SRI-OV (S/n): ").upper()
+            sriov = sriovInput in ["S", "Y", "SI", "YES"]
+            if sriov:
+                ifSRIOV = listaSRIOV.pop()
 
         flag = BC.bootImg(index, repDir, imgArr[imgOp-1], mem, cpus, kdb, sriov, ifSRIOV)
         if flag: dictVM[index] = flag
