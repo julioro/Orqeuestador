@@ -26,7 +26,7 @@
 #}
 <domain type='kvm'>
     <name>{{ name }}</name>
-    <memory unit='MiB'>{{ mem }}</memory>
+    <memory unit='{{ mem[0] }}'>{{ mem[1] }}</memory>
     <vcpu placement='static'>{{ cantCpu }}</vcpu>
     {# Boot order #}
     <os>
@@ -61,7 +61,7 @@
             <source>
                 <address domain='{{ pciPass.domain }}' bus='{{ pciPass.bus }}' slot='{{ pciPass.slot }}' function='{{ pciPass.function }}'/>
             </source>
-        </hostdev>{% endif %}    
+        </hostdev>{% endif %}
         <graphics type='vnc' port='-1' listen='127.0.0.1'/>
         <serial type='pty'>
             <target type='isa-serial' port='0'>

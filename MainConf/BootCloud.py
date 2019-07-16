@@ -16,14 +16,14 @@ sshPath = "../SshFolder"
 #REP="/home/labtel/images"
 MacBase = "52:55:00:d1:55:00"
 
-def bootImg(index, REP, img, mem=1024, cantCpu=1, kdb=False, pciPassEx=False):
+def bootImg(index, REP, img, mem=1024, cantCpu=1, kdb=False, sriov=False ,ifSRIOV=""):
     defUser = img["defUser"]
     imgOp = img["img"]
     # Define variables
     name = "vm-" + index
     print("NAME", name)
     imgPath = "{0}/{1}".format(REP, imgOp)
-    
+
     # Define user-data y meta-data
     print("Construyendo cloud-config ...")
     os.system("rm -rf ../Imagenes/{0}; mkdir -p ../Imagenes/{0}; rm -rf {1}/{0}/ ; mkdir -p {1}/{0}".format(index, REP))
@@ -53,24 +53,30 @@ def bootImg(index, REP, img, mem=1024, cantCpu=1, kdb=False, pciPassEx=False):
     print("Construyendo domainConfig.xml ...")
     # Funciona para direct-kernel boot y boot por volumen
     disksArray = [{'device':'disk', 'path':"{0}/{1}/boot-disk.img".format(REP, index), 'hdType':'vda', 'driverType':'qcow2', 'bus': 'virtio'}, {'device':'cdrom', 'path':'{0}/{1}/seed.iso'.format(REP, index), 'hdType':'hda', 'driverType':'raw', 'bus': 'ide'}]
-    
+
     # Creacion de la interfaz tap
     mac = nextMac(index)
     os.system("bash crearInterfazTap.sh {0} {1}".format(index, mac))
     tapInt = "tap" + index
 
     ifacesArray = [{'name': tapInt, 'type':'network', 'mac':mac, 'targetDev':tapInt, 'modelType':'virtio'}]
-    
+
     # Para el Direct Kernel Boot
     kernelPath = "../Imagenes/{0}/vmlinuz".format(index)
     initrdPath = "../Imagenes/{0}/initrd".format(index)
 
-    # Para PCI PassThrough
-    pciPassEx = False
-    pciPass = {}
-    #pciPass = {'domain': '0x0000', 'bus': '0x03', 'slot': '0x00', 'function': '0x0'}
-    
-    xmlConfig = lT.xmlConfig(hwTemplatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath, pciPassEx, pciPass)
+    # Para PCI PassThrough / SRIOV
+    if sriov:
+        ifSRIOVD = ifSRIOV.split(":")
+        domainIF = "0x"+ifSRIOVD[0]
+        busIF = "0x"+ifSRIOVD[1]
+        slotIF = "0x"+ifSRIOVD[2].split(".")[0]
+        functionIF = "0x"+ifSRIOVD[2].split(".")[1]
+        ifSRIOVL = {'domain': domainIF, 'bus': busIF, 'slot':slotIF, 'function':functionIF}
+    else:
+        ifSRIOVL = {}
+        
+    xmlConfig = lT.xmlConfig(hwTemplatePath, name, mem, cantCpu, disksArray, ifacesArray, kdb, kernelPath, initrdPath, sriov, ifSRIOVL)
 
     # Mostar toda la configuracion para una maquina virtual.
     print("*"*70)
@@ -89,7 +95,7 @@ def bootImg(index, REP, img, mem=1024, cantCpu=1, kdb=False, pciPassEx=False):
         return False
 
     print('Guest', dom.name(), ' has booted')
-    return True
+    return {"name":name, "mem": mem, "cpus":cantCpu, "imagen": imgOp, "ifaces":ifacesArray, "disksArray":disksArray}
 
 
 def nextMac(index):
